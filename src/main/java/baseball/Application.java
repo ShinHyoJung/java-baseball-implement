@@ -24,29 +24,8 @@ public class Application {
             int num2 = input % 100 / 10;
             int num3 = input % 100 % 10;
 
-            int [] number = {num1, num2, num3};
-            int count=0;
 
-            for(int i=0; i<(result.length); i++) {
-                for(int j=0; j<(number.length); j++) {
-
-                    if(result[i] == number[j]) {
-                        count++;
-
-                        if(count>3) {
-                            count=3;
-                        }
-                    }
-                }
-
-            }
-
-            if(count >0) {
-                System.out.print(count + "볼 ");
-            }
-            else {
-
-            }
+            ball(num);
 
             if (hundred == num1 && ten == num2 && one == num3) {
                 System.out.println("3스트라이크 정답입니다.");
@@ -67,6 +46,43 @@ public class Application {
                 System.out.println("낫싱");
             }
 
+
+        }
+
+    }
+
+    private static void ball(int num) {
+
+        int hundred = num / 100;
+        int ten = num % 100 / 10;
+        int one = num % 100 % 10;
+        int[] result = {hundred, ten, one };
+
+        int input = Integer.parseInt(Console.readLine());
+
+        int num1 = input / 100;
+        int num2 = input % 100 / 10;
+        int num3 = input % 100 % 10;
+
+
+        int count=0;
+        int [] number = {num1, num2, num3};
+
+        for(int i=0; i<(result.length); i++) {
+            for(int j=0; j<(number.length); j++) {
+
+                if(result[i] == number[j]) {
+                    count++;
+
+                }
+            }
+
+        }
+
+        if(count >0) {
+            System.out.print(count + "볼 ");
+        }
+        else {
 
         }
 
