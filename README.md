@@ -123,3 +123,13 @@
 
 ## 📝 License
 This project is [MIT](https://github.com/woowacourse/java-baseball-precourse/blob/master/LICENSE) licensed.
+
+** 정답 자릿수 분리
+
+** 입력한 수 자릿수 분리
+
+** 볼 개수
+
+** 스트라이크 개수
+
+** 낫싱 개수 
