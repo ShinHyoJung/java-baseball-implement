@@ -3,82 +3,124 @@ package baseball;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
+
+
 public class Application {
+
+    private static final int HUNDRED = 100;
+    private static final int TEN = 10;
+    private static final String CORRECT="정답입니다!";
+
+    public static int[] splitNum(int num) {
+
+        int hundred = num / HUNDRED;
+        int ten = num % HUNDRED / TEN;
+        int one = num % HUNDRED % TEN;
+        int [] result = {hundred, ten, one};
+
+        return result;
+    }
+
+    public static int countStrike(int[] input, int[] answer) {
+        int strike_count=0;
+
+        for(int i=0; i<3; i++) {
+           if(input[i] == answer[i]) {
+                strike_count++;
+           }
+        }
+
+        return strike_count;
+    }
+
+
+
+    public static int countBall(int[] input, int[] answer) {
+        int ball_count = 0;
+
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3;j++) {
+
+                if(input[i] == answer[j]) {
+                    ball_count++;
+                }
+            }
+        }
+        return ball_count;
+    }
+
+    public static void printBall(int ball) {
+        if(ball>0) {
+            System.out.println(ball + "볼");
+        }
+    }
+
+    public static String printStrike(int strike) {
+
+        String str = null;
+
+        if(strike> 0) {
+            System.out.println(strike + "스트라이크");
+            str = "스트라이크";
+            if(strike==3) {
+                System.out.println(CORRECT);
+                str = CORRECT;
+            }
+        }
+        return str;
+    }
+
+    public static void printNothing(int strike, int ball) {
+        if(strike == 0 && ball ==0) {
+            System.out.println("낫싱");
+        }
+    }
+
+    public static int Menu() {
+        System.out.println("1. 종료");
+        System.out.println("2. 재시작");
+
+        int select = Integer.parseInt(Console.readLine());
+
+        return select;
+    }
+
     public static void main(String[] args) {
         //TODO: 숫자 야구 게임 구현
 
         System.out.println("시작");
-        int num = Randoms.pickNumberInRange(100, 999);
+        int randnum = Randoms.pickNumberInRange(100, 999);
 
-        int select;
-        int hundred = num / 100;
-        int ten = num % 100 / 10;
-        int one = num % 100 % 10;
-        int[] result = {hundred, ten, one};
+        int[] answer = splitNum(randnum);
 
 
         while (true) {
 
-            int strike_count = 0;
-            int ball_count = 0;
             System.out.println("숫자를 입력하세요.");
             int input = Integer.parseInt(Console.readLine());
 
-            int num1 = input / 100;
-            int num2 = input % 100 / 10;
-            int num3 = input % 100 % 10;
+            int[] inputnumber = splitNum(input);
+            int countstrike = countStrike(answer, inputnumber);
+            int countball = countBall(answer, inputnumber);
 
-            int[] number = {num1, num2, num3};
+            countball -= countstrike;
 
-            for (int i = 0; i < 3; i++) {
+            System.out.println(countstrike + " " + countball);
 
-                if (number[i] == result[i]) {
+            printNothing(countstrike, countball);
+            printBall(countball);
+            String str = printStrike(countstrike);
 
-                    strike_count++;
-                }
-
-            }
-
-            for(int i=0; i<3; i++)
-                for(int j=0; j<3; j++) {
-                if(number[i] == result[j]) {
-                    ball_count++;
-
-                }
-            }
-            ball_count = ball_count - strike_count;
-
-            if(ball_count>0) {
-                if(strike_count>0) {
-                    System.out.print(ball_count + "볼");
-                } else {
-                    System.out.println(ball_count + "볼");
+            if(str == CORRECT) {
+             int select = Menu();
+                if(select ==1) {
+                     break;
                 }
             }
 
-            if(strike_count > 0) {
-                System.out.println(strike_count + "스트라이크");
-
-                if(strike_count == 3) {
-                    System.out.println("정답입니다!");
-                    System.out.println("1. 종료");
-                    System.out.println("2. 재시작");
-
-                    select = Integer.parseInt(Console.readLine());
-
-                    if(select ==1) {
-                        break;
-                    } else if(select ==2) {
-                    // 재시작 구현
-                    }
-                }
-            }
-
-            if(ball_count ==0 && strike_count ==0) {
-                System.out.println("낫싱");
-            }
         }
-// 볼 = 볼 - 스트라이크
+
+
     }
 }
 
