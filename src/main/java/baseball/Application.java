@@ -24,7 +24,7 @@ public class Application {
     public static int countStrike(int[] input, int[] answer) {
         int strike_count=0;
 
-        for(int i=0; i<3; i++) {
+        for(int i=0; i< answer.length; i++) {
            if(input[i] == answer[i]) {
                 strike_count++;
            }
@@ -38,8 +38,8 @@ public class Application {
     public static int countBall(int[] input, int[] answer) {
         int ball_count = 0;
 
-        for(int i=0; i<3; i++) {
-            for(int j=0; j<3;j++) {
+        for(int i=0; i<input.length; i++) {
+            for(int j=0; j<answer.length;j++) {
 
                 if(input[i] == answer[j]) {
                     ball_count++;
@@ -85,21 +85,17 @@ public class Application {
         return select;
     }
 
-    public static void main(String[] args) {
-        //TODO: 숫자 야구 게임 구현
-
-        System.out.println("시작");
-        int randnum = Randoms.pickNumberInRange(100, 999);
-
-        int[] answer = splitNum(randnum);
-
-
+    public static void Start(int[] answer) {
         while (true) {
 
             System.out.println("숫자를 입력하세요.");
             int input = Integer.parseInt(Console.readLine());
-
             int[] inputnumber = splitNum(input);
+
+            if(inputnumber.length != 2) {
+                throw new IllegalArgumentException();
+            }
+
             int countstrike = countStrike(answer, inputnumber);
             int countball = countBall(answer, inputnumber);
 
@@ -111,16 +107,23 @@ public class Application {
             printBall(countball);
             String str = printStrike(countstrike);
 
-            if(str == CORRECT) {
-             int select = Menu();
-                if(select ==1) {
-                     break;
+            if (str == CORRECT) {
+                int select = Menu();
+                if (select == 1) {
+                    break;
                 }
             }
-
         }
+    }
 
 
+    public static void main(String[] args) {
+        //TODO: 숫자 야구 게임 구현
+
+        System.out.println("시작");
+        int randnum = Randoms.pickNumberInRange(100, 999);
+        int[] answer = splitNum(randnum);
+        Start(answer);
     }
 }
 
