@@ -9,14 +9,32 @@ public class Application {
 
     private static final int HUNDRED = 100;
     private static final int TEN = 10;
+    private static final int STRIKE3 = 3;
+    private static final int EXISTENCE = 0;
+    private static final String ANNOUNCE="숫자를 입력해주세요";
     private static final String CORRECT="정답입니다!";
+    private static final String BALL = "볼";
+    private static final String STRIKE = "스트라이크";
+    private static final String NOTHING = "낫싱";
+    private static final String MENU1 = "1. 종료";
+    private static final String MENU2 = "2. 재시작";
 
     public static int[] splitNum(int num) {
+
+        int length = (int)(Math.log10(num)+1);
+
+        if(length != 3) {
+            throw new IllegalArgumentException();
+        }
 
         int hundred = num / HUNDRED;
         int ten = num % HUNDRED / TEN;
         int one = num % HUNDRED % TEN;
         int [] result = {hundred, ten, one};
+
+        if(hundred==0 || ten==0 || one==0) {
+            throw new IllegalArgumentException();
+        }
 
         return result;
     }
@@ -40,7 +58,6 @@ public class Application {
 
         for(int i=0; i<input.length; i++) {
             for(int j=0; j<answer.length;j++) {
-
                 if(input[i] == answer[j]) {
                     ball_count++;
                 }
@@ -50,8 +67,8 @@ public class Application {
     }
 
     public static void printBall(int ball) {
-        if(ball>0) {
-            System.out.println(ball + "볼");
+        if(ball>EXISTENCE) {
+            System.out.println(ball + BALL);
         }
     }
 
@@ -59,10 +76,10 @@ public class Application {
 
         String str = null;
 
-        if(strike> 0) {
-            System.out.println(strike + "스트라이크");
-            str = "스트라이크";
-            if(strike==3) {
+        if(strike> EXISTENCE) {
+            System.out.println(strike + STRIKE);
+            str = STRIKE;
+            if(strike==STRIKE3) {
                 System.out.println(CORRECT);
                 str = CORRECT;
             }
@@ -71,59 +88,61 @@ public class Application {
     }
 
     public static void printNothing(int strike, int ball) {
-        if(strike == 0 && ball ==0) {
-            System.out.println("낫싱");
+        if(strike == EXISTENCE && ball ==EXISTENCE) {
+            System.out.println(NOTHING);
         }
     }
 
-    public static int Menu() {
-        System.out.println("1. 종료");
-        System.out.println("2. 재시작");
+    public static int menu() {
+        System.out.println(MENU1);
+        System.out.println(MENU2);
 
         int select = Integer.parseInt(Console.readLine());
 
         return select;
     }
 
-    public static void Start(int[] answer) {
+    public static void start(int[] answer) {
         while (true) {
 
-            System.out.println("숫자를 입력하세요.");
+            System.out.println(ANNOUNCE);
+
             int input = Integer.parseInt(Console.readLine());
             int[] inputnumber = splitNum(input);
 
-            if(inputnumber.length != 2) {
-                throw new IllegalArgumentException();
-            }
-
             int countstrike = countStrike(answer, inputnumber);
-            int countball = countBall(answer, inputnumber);
+           // int countball = countBall(answer, inputnumber);
 
-            countball -= countstrike;
+           // countball -= countstrike;
 
-            System.out.println(countstrike + " " + countball);
-
-            printNothing(countstrike, countball);
-            printBall(countball);
+            //printNothing(countstrike, countball);
+        //    printBall(countball);
             String str = printStrike(countstrike);
 
             if (str == CORRECT) {
-                int select = Menu();
+                int select = menu();
                 if (select == 1) {
                     break;
+                } else if(select ==2) {
+                    makeRandom(answer);
                 }
             }
         }
     }
 
+    public static void makeRandom(int[] answer) {
+
+        for (int i=0; i< answer.length; i++) {
+            int randnum = Randoms.pickNumberInRange(1, 9);
+            answer[i] = randnum;
+        }
+        start(answer);
+    }
 
     public static void main(String[] args) {
-        //TODO: 숫자 야구 게임 구현
 
-        System.out.println("시작");
-        int randnum = Randoms.pickNumberInRange(100, 999);
-        int[] answer = splitNum(randnum);
-        Start(answer);
+        int []answer = new int[3];
+        makeRandom(answer);
     }
 }
 
