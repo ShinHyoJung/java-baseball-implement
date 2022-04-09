@@ -1,148 +1,65 @@
 package baseball;
 
 import camp.nextstep.edu.missionutils.Console;
-import camp.nextstep.edu.missionutils.Randoms;
 
-
+import static baseball.Count.countBall;
+import static baseball.Count.countStrike;
+import static baseball.Print.print;
+import static baseball.MakeNum.makeRandom;
+import static baseball.MakeNum.splitNum;
 
 public class Application {
 
-    private static final int HUNDRED = 100;
-    private static final int TEN = 10;
-    private static final int STRIKE3 = 3;
-    private static final int EXISTENCE = 0;
+    private static int LENGTH = 3;
     private static final String ANNOUNCE="숫자를 입력해주세요";
-    private static final String CORRECT="정답입니다!";
-    private static final String BALL = "볼";
-    private static final String STRIKE = "스트라이크";
-    private static final String NOTHING = "낫싱";
-    private static final String MENU1 = "1. 종료";
-    private static final String MENU2 = "2. 재시작";
-
-    public static int[] splitNum(int num) {
-
-        int length = (int)(Math.log10(num)+1);
-
-        if(length != 3) {
-            throw new IllegalArgumentException();
-        }
-
-        int hundred = num / HUNDRED;
-        int ten = num % HUNDRED / TEN;
-        int one = num % HUNDRED % TEN;
-        int [] result = {hundred, ten, one};
-
-        if(hundred==0 || ten==0 || one==0) {
-            throw new IllegalArgumentException();
-        }
-
-        return result;
-    }
-
-    public static int countStrike(int[] input, int[] answer) {
-        int strike_count=0;
-
-        for(int i=0; i< answer.length; i++) {
-           if(input[i] == answer[i]) {
-                strike_count++;
-           }
-        }
-
-        return strike_count;
-    }
-
-
-
-    public static int countBall(int[] input, int[] answer) {
-        int ball_count = 0;
-
-        for(int i=0; i<input.length; i++) {
-            for(int j=0; j<answer.length;j++) {
-                if(input[i] == answer[j]) {
-                    ball_count++;
-                }
-            }
-        }
-        return ball_count;
-    }
-
-    public static void printBall(int ball) {
-        if(ball>EXISTENCE) {
-            System.out.println(ball + BALL);
-        }
-    }
-
-    public static String printStrike(int strike) {
-
-        String str = null;
-
-        if(strike> EXISTENCE) {
-            System.out.println(strike + STRIKE);
-            str = STRIKE;
-            if(strike==STRIKE3) {
-                System.out.println(CORRECT);
-                str = CORRECT;
-            }
-        }
-        return str;
-    }
-
-    public static void printNothing(int strike, int ball) {
-        if(strike == EXISTENCE && ball ==EXISTENCE) {
-            System.out.println(NOTHING);
-        }
-    }
+    private static final String MENU_END_DESCRIPTION = "1. 종료";
+    private static final String MENU_RESTART_DESCRIPTION = "2. 재시작";
+    private static final int MENU_END = 1;
+    private static final int MENU_RESTART = 2;
 
     public static int menu() {
-        System.out.println(MENU1);
-        System.out.println(MENU2);
+
+        System.out.println(MENU_END_DESCRIPTION);
+        System.out.println(MENU_RESTART_DESCRIPTION);
 
         int select = Integer.parseInt(Console.readLine());
 
+        if (select == MENU_END) {
+            select = 1;
+        } else if (select == MENU_RESTART) {
+            main();
+        }
         return select;
     }
 
-    public static void start(int[] answer) {
-        while (true) {
+    public static void run(int[] answer) {
+        int i=0;
+        do {
 
             System.out.println(ANNOUNCE);
 
             int input = Integer.parseInt(Console.readLine());
-            int[] inputnumber = splitNum(input);
+            int[] inputNumber = splitNum(input);
 
-            int countstrike = countStrike(answer, inputnumber);
-           // int countball = countBall(answer, inputnumber);
+            int strike = countStrike(inputNumber, answer);
+            int ball = countBall(inputNumber, answer);
 
-           // countball -= countstrike;
+            print(strike, ball);
 
-            //printNothing(countstrike, countball);
-        //    printBall(countball);
-            String str = printStrike(countstrike);
-
-            if (str == CORRECT) {
+            if (strike == LENGTH) {
                 int select = menu();
-                if (select == 1) {
-                    break;
-                } else if(select ==2) {
-                    makeRandom(answer);
-                }
+                i = select;
             }
-        }
+
+
+        } while(i != 1);
     }
 
-    public static void makeRandom(int[] answer) {
-
-        for (int i=0; i< answer.length; i++) {
-            int randnum = Randoms.pickNumberInRange(1, 9);
-            answer[i] = randnum;
-        }
-        start(answer);
-    }
 
     public static void main(String[] args) {
 
-        int []answer = new int[3];
-        makeRandom(answer);
+        int[] answer = makeRandom();
+        run(answer);
     }
 }
 
