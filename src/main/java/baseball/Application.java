@@ -27,7 +27,6 @@ public class Application {
         if (select == MENU_END) {
             select = 1;
         } else if (select == MENU_RESTART) {
-            main();
         }
         return select;
     }
