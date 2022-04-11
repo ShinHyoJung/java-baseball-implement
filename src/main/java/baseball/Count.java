@@ -2,10 +2,12 @@ package baseball;
 
 public class Count {
 
-    public static int countStrike(int[] input, int[] answer) {
-        int strikeCount = 0;
+    private static int START_NUM = 0;
 
-        for (int i = 0; i < answer.length; i++) {
+    public static int countStrike(int[] input, int[] answer) {
+        int strikeCount = START_NUM;
+
+        for (int i = START_NUM; i < answer.length; i++) {
             if (input[i] == answer[i]) {
                 strikeCount++;
             }
@@ -15,7 +17,7 @@ public class Count {
     }
 
     public static int countBall(int[] input, int[] answer) {
-        int ballCount = 0;
+        int ballCount = START_NUM;
 
         for (int i : input) {
             for (int j : answer) {

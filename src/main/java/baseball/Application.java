@@ -4,14 +4,17 @@ import camp.nextstep.edu.missionutils.Console;
 
 import static baseball.Count.countBall;
 import static baseball.Count.countStrike;
-import static baseball.Print.print;
 import static baseball.MakeNum.makeRandom;
 import static baseball.MakeNum.splitNum;
+import static baseball.Print.print;
 
 public class Application {
 
     private static int LENGTH = 3;
-    private static final String ANNOUNCE="숫자를 입력해주세요";
+    private static int START_NUM = 0;
+    private static int END_NUM = 1;
+    private static final String ANNOUNCE = "숫자를 입력해주세요:";
+    private static final String END_ANNOUNCE = "게임 종료";
     private static final String MENU_END_DESCRIPTION = "1. 종료";
     private static final String MENU_RESTART_DESCRIPTION = "2. 재시작";
     private static final int MENU_END = 1;
@@ -25,17 +28,17 @@ public class Application {
         int select = Integer.parseInt(Console.readLine());
 
         if (select == MENU_END) {
-            select = 1;
+            select = END_NUM;
         } else if (select == MENU_RESTART) {
+            main(new String[]{});
         }
         return select;
     }
 
     public static void run(int[] answer) {
-        int i=0;
+        int i = START_NUM;
         do {
-
-            System.out.println(ANNOUNCE);
+            System.out.print(ANNOUNCE);
 
             int input = Integer.parseInt(Console.readLine());
             int[] inputNumber = splitNum(input);
@@ -50,8 +53,11 @@ public class Application {
                 i = select;
             }
 
+            if (i == END_NUM) {
+                System.out.println(END_ANNOUNCE);
+            }
 
-        } while(i != 1);
+        } while (i != END_NUM);
     }
 
 

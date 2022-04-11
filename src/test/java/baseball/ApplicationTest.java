@@ -31,6 +31,6 @@ class ApplicationTest extends NsTest {
 
     @Override
     public void runMain() {
-        Application.main();
+        Application.main(new String[]{});
     }
 }
