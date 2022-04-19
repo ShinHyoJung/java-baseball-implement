@@ -2,17 +2,14 @@ package baseball;
 
 import camp.nextstep.edu.missionutils.Console;
 
-import static baseball.Count.countBall;
-import static baseball.Count.countStrike;
-import static baseball.MakeNum.makeRandom;
-import static baseball.MakeNum.splitNum;
-import static baseball.Print.print;
+import java.util.Map;
 
 public class Application {
-
-    private static int LENGTH = 3;
-    private static int START_NUM = 0;
-    private static int END_NUM = 1;
+    private static final int LENGTH = 3;
+    private static final int START_NUM = 0;
+    private static final int END_NUM = 1;
+    private static final int RESTART_NUM = 2;
+    private static final String READY_ANNOUNCE = "준비되었습니다.";
     private static final String ANNOUNCE = "숫자를 입력해주세요:";
     private static final String END_ANNOUNCE = "게임 종료";
     private static final String MENU_END_DESCRIPTION = "1. 종료";
@@ -21,7 +18,6 @@ public class Application {
     private static final int MENU_RESTART = 2;
 
     public static int menu() {
-
         System.out.println(MENU_END_DESCRIPTION);
         System.out.println(MENU_RESTART_DESCRIPTION);
 
@@ -30,40 +26,52 @@ public class Application {
         if (select == MENU_END) {
             select = END_NUM;
         } else if (select == MENU_RESTART) {
-            main(new String[]{});
+            select = RESTART_NUM;
         }
         return select;
     }
 
     public static void run(int[] answer) {
-        int i = START_NUM;
+        int STATUS = START_NUM;
         do {
             System.out.print(ANNOUNCE);
 
             int input = Integer.parseInt(Console.readLine());
-            int[] inputNumber = splitNum(input);
+            MakeNum split = new MakeNum();
+            int[] inputNumber = split.splitNum(input);
 
-            int strike = countStrike(inputNumber, answer);
-            int ball = countBall(inputNumber, answer);
+            Count count = new Count();
+            int strike = count.countStrike(inputNumber, answer);
+            int ball = count.countBall(inputNumber, answer);
 
-            print(strike, ball);
+            Print print = new Print();
+            print.print(strike, ball);
 
             if (strike == LENGTH) {
-                int select = menu();
-                i = select;
+                STATUS = menu();
             }
 
-            if (i == END_NUM) {
+            if (STATUS == END_NUM) {
                 System.out.println(END_ANNOUNCE);
             }
 
-        } while (i != END_NUM);
+            if(STATUS == RESTART_NUM) {
+               // main(new String[]{});
+            }
+
+        } while (STATUS != END_NUM);
     }
 
+    public static int[] ready() {
+        MakeNum makeRandom = new MakeNum();
+        int[] answer = makeRandom.makeRandom();
+        System.out.println(READY_ANNOUNCE);
+
+        return answer;
+    }
 
     public static void main(String[] args) {
-
-        int[] answer = makeRandom();
+        int[] answer = ready();
         run(answer);
     }
 }

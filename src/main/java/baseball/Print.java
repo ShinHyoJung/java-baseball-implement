@@ -9,8 +9,16 @@ public class Print {
     private static final int LENGTH = 3;
     private static final int EXISTENCE = 0;
 
-    public static void print(int strike, int ball) {
+    public void print(int strike, int ball) {
 
+        if (strike == EXISTENCE && ball == EXISTENCE) {
+            System.out.println(NOTHING);
+        }
+
+        System.out.println(append(strike, ball));
+    }
+
+    public String append(int strike, int ball) {
         StringBuffer sb = new StringBuffer();
 
         if (ball > EXISTENCE) {
@@ -24,10 +32,6 @@ public class Print {
             }
         }
 
-        System.out.println(sb);
-
-        if (strike == EXISTENCE && ball == EXISTENCE) {
-            System.out.println(NOTHING);
-        }
+        return sb.toString();
     }
 }
