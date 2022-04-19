@@ -56,7 +56,7 @@ public class Application {
             }
 
             if(STATUS == RESTART_NUM) {
-               // main(new String[]{});
+               main(new String[]{});
             }
 
         } while (STATUS != END_NUM);

@@ -9,11 +9,12 @@ public class MakeNum {
     private static final int ZERO = 0;
 
     public int[] makeRandom() {
-        int[] answer = new int[3];
+        int[] answer = new int[LENGTH];
         int count = 0;
         while (count < LENGTH) {
             int randNum = Randoms.pickNumberInRange(1, 9);
-            removeDuplicate(answer, randNum);
+            answer = removeDuplicate(answer, randNum);
+            count++;
         }
         return answer;
     }
@@ -23,7 +24,6 @@ public class MakeNum {
         for (int i=0; i<LENGTH;i++) {
             if (answer[i] != randNum) {
                 answer[count] = randNum;
-                count++;
                 break;
             }
         }
